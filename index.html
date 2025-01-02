@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVM Application</title>
+    <style>
+        body {
+            background-image: linear-gradient(45deg, #ff7f50, #87cefa, #32cd32);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            padding: 20px;
+            text-align: center; /* Centering the entire body */
+        }
+    
+        h1, h2 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    
+        form {
+            display: inline-block; /* Keeps the form centered */
+            text-align: left; /* Aligns text inside form fields */
+            margin-top: 20px;
+        }
+    
+        label {
+            font-size: 16px;
+            margin-right: 10px;
+            display: block; /* Ensures labels are stacked vertically */
+            margin-bottom: 5px;
+        }
+    
+        input {
+            padding: 8px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            width: 200px; /* Sets a consistent width for the input fields */
+        }
+    
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 10px auto;
+        }
+    
+        button:hover {
+            background-color: #45a049;
+        }
+    
+        #prediction-result {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+    
+    <script>
+        // Model data in JSON format
+        const modelData = {
+            "scaler": {
+                "mean": [10.5, 200, 150, 150, 150],
+                "scale": [2.5, 50, 50, 50, 50]
+            },
+            "svm": {
+                "coef": [[0.1, 0.2, 0.3, 0.4, 0.5]],
+                "intercept": [-0.5],
+                "classes": ["Grapefruit", "Orange"]
+            }
+        };
+
+        // Normalize input features
+        function normalize(input, mean, scale) {
+            return input.map((value, index) => (value - mean[index]) / scale[index]);
+                }
+
+                // Predict using the loaded model
+                function predict(inputFeatures) {
+            const normalizedInput = normalize(inputFeatures, modelData.scaler.mean, modelData.scaler.scale);
+
+            // Calculate linear combination (dot product)
+            const coef = modelData.svm.coef[0];
+            const intercept = modelData.svm.intercept[0];
+            let score = intercept;
+
+            for (let i = 0; i < normalizedInput.length; i++) {
+                score += coef[i] * normalizedInput[i];
+            }
+
+            // Apply decision threshold
+            const result = score > 0 ? modelData.svm.classes[0] : modelData.svm.classes[1];
+
+            // Correcting the result display
+            document.getElementById('prediction-result').innerText = `Hasil Prediksi: ${result}`;
+        }
+
+    </script>
+</head>
+<body>
+    <h1>SELAMAT DATANG DI APLIKASI SVM BERBASIS WEB</h1>
+
+    <form id="prediction-form" onsubmit="event.preventDefault();">
+        <label for="diameter">Diameter:</label>
+        <input type="number" id="diameter" required><br>
+
+        <label for="weight">Weight:</label>
+        <input type="number" id="weight" required><br>
+
+        <label for="red">Red :</label>
+        <input type="number" id="red" required><br>
+
+        <label for="green">Green:</label>
+        <input type="number" id="green" required><br>
+
+        <label for="blue">Blue :</label>
+        <input type="number" id="blue" required><br>
+
+        <button type="button" onclick="handlePrediction()">Prediksi</button>
+    </form>
+
+    <h3 id="prediction-result">Hasil Prediksi: </h3>
+
+    <script>
+        function handlePrediction() {
+            const diameter = parseFloat(document.getElementById('diameter').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+            const red = parseFloat(document.getElementById('red').value);
+            const green = parseFloat(document.getElementById('green').value);
+            const blue = parseFloat(document.getElementById('blue').value);
+
+            const inputFeatures = [diameter, weight, red, green, blue];
+
+            predict(inputFeatures);
+        }
+    </script>
+</body>
+</html>
