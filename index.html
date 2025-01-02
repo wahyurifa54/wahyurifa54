@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -95,10 +95,10 @@
         // Normalize input features
         function normalize(input, mean, scale) {
             return input.map((value, index) => (value - mean[index]) / scale[index]);
-                }
+        }
 
-                // Predict using the loaded model
-                function predict(inputFeatures) {
+        // Predict using the loaded model
+        function predict(inputFeatures) {
             const normalizedInput = normalize(inputFeatures, modelData.scaler.mean, modelData.scaler.scale);
 
             // Calculate linear combination (dot product)
@@ -110,10 +110,17 @@
                 score += coef[i] * normalizedInput[i];
             }
 
-            // Apply decision threshold
-            const result = score > 0 ? modelData.svm.classes[0] : modelData.svm.classes[1];
+            // Apply new decision thresholds
+            let result;
+            if (score < 2) {
+                result = "Orange";
+            } else if (score >= 3) {
+                result = "Grapefruit";
+            } else {
+                result = "Indeterminate"; // For scores between 2 and 3
+            }
 
-            // Correcting the result display
+            // Display the result
             document.getElementById('prediction-result').innerText = `Hasil Prediksi: ${result}`;
         }
 
