@@ -59,7 +59,7 @@
             background-color: #45a049;
         }
     
-        #prediksi {
+        #prediction-result {
             text-align: center;
             font-size: 18px;
             margin-top: 20px;
@@ -94,7 +94,7 @@
             return input.map((value, index) => (value - mean[index]) / scale[index]);
         }
 
-        function prediksi(inputFeatures) {
+        function predict(inputFeatures) {
             const normalizedInput = normalize(inputFeatures, modelData.scaler.mean, modelData.scaler.scale);
 
             const coef = modelData.svm.coef;
@@ -157,6 +157,6 @@
         <button type="button" onclick="handlePrediction()">Prediksi</button>
     </form>
 
-    <h3 id="Hasil Prediksi">hasil prediksi: </h3>
+    <h3 id="prediction-result">hasil prediksi: </h3>
 </body>
 </html>
