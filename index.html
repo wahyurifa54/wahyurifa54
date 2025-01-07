@@ -59,7 +59,7 @@
             background-color: #45a049;
         }
     
-        #prediction-result {
+        #prediksi {
             text-align: center;
             font-size: 18px;
             margin-top: 20px;
@@ -94,7 +94,7 @@
             return input.map((value, index) => (value - mean[index]) / scale[index]);
         }
 
-        function predict(inputFeatures) {
+        function prediksi(inputFeatures) {
             const normalizedInput = normalize(inputFeatures, modelData.scaler.mean, modelData.scaler.scale);
 
             const coef = modelData.svm.coef;
